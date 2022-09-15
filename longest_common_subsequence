@@ -1,0 +1,37 @@
+def longest_common_subsequence(string_1, string_2):
+      letters = []
+      last_idx_1 = 0
+      last_idx_2 = 0
+      print("Finding longest common subsequence of {0} and {1}".format(string_1, string_2))
+
+      # Building grid to hold count. First row across and first col down needs to be zero
+      grid = [[0 for col in range(len(string_1) + 1)] for row in range(len(string_2) + 1)]
+      for row in range(1, len(string_2) + 1):       # Select row from grid that needs to be updated
+        print("Comparing: {0}".format(string_2[row - 1]))   # Select letter from string 2
+        for col in range(1, len(string_1) + 1):     # Select col from grid that needs to be updated
+          print("Against: {0}".format(string_1[col - 1]))   # Select letter omfr string 1
+          if string_1[col - 1] == string_2[row - 1]:        # Compare letter of string 1 to letter from string 2.
+            grid[row][col] = grid[row - 1][col -1 ] +1
+            cur_str1_idx = col - 1      # Saving cur index number to compare with last idx number updated in letters list
+            cur_str2_idx = row - 1
+            # Checking grid block before current block and grid block above is less than current block
+            # And if current index position in string 1 and 2 are not smaller than current to avoid updating letter out of sequence
+            if max(grid[row - 1][col], grid[row][col -1]) < grid[row][col] and cur_str1_idx >= last_idx_1 and cur_str2_idx >= last_idx_2:
+                letters += string_1[col - 1]
+                last_idx_1 = col - 1        # Saving index position of last letter updated in letters list
+                last_idx_2 = row - 1
+          else:
+            grid[row][col] = max(grid[row - 1][col], grid[row][col -1])     # Updating current grid block with max number for 1 block before and 1 block above
+      print("\nThe common longest subsequent letters are: ", letters)
+
+      # Printing grid with numbers
+      print("\nThe complete grid looks as follow: \n ")
+      for row_line in grid:
+        print(row_line)
+
+
+
+dna_1 = "ACCGTT"
+dna_2 = "CCAGCA"
+
+longest_common_subsequence(dna_1, dna_2)
